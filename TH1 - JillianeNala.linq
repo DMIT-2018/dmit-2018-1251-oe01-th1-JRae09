@@ -29,3 +29,7 @@ Rentals
         // if no rental type, mark as U/K
         Description = x.RentalType == null ? "U/K" : x.RentalType.Description
     })
+	
+	  .OrderBy(x => x.Community)   // community A-Z
+    .ThenByDescending(x => x.MonthlyRent) // rent high -> low
+    .Dump();
