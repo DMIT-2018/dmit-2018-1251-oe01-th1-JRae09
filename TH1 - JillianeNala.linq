@@ -33,3 +33,6 @@ Rentals
 	  .OrderBy(x => x.Community)   // community A-Z
     .ThenByDescending(x => x.MonthlyRent) // rent high -> low
     .Dump();
+	
+// dump at the end so I can actually see the results in linq
+// easier to check if my filtering + ordering is correct
