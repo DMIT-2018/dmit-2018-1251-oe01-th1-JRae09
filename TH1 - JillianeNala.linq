@@ -21,7 +21,7 @@ var results =
             x.MonthlyRent,
             Vacancies = x.MaxTenants - x.Renters.Count(),
             Community = x.Address.Community,
-            Description = x.RentalType?.Description ?? "U/K"
+            Description = x.RentalType == null ? "U/K" : x.RentalType.Description
         })
 	
 .Where(r => r.Vacancies > 0 &&
