@@ -1,5 +1,5 @@
 # Basic Starter Kit
 
-## Owner your name
+## Jilliane Nala
 
-alter this statement to indicate the usage of this repository
+Take Home Assignment 1
