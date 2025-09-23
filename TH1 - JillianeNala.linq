@@ -1,4 +1,4 @@
-<Query Kind="SQL">
+<Query Kind="Statements">
   <Connection>
     <ID>d5528301-aed4-4b20-a0fc-3edd1b65a872</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
@@ -12,27 +12,24 @@
   </Connection>
 </Query>
 
-// Q1 
-// rentals w/ vacancies + only Oliver, Westmount, Forest Heights
-Rentals
-    .Where(x => x.Vacancies > 0 
-             && (x.Community == "Oliver" 
-              || x.Community == "Westmount" 
-              || x.Community == "Forest Heights"))
+// Q1 – rentals with vacancies in Oliver, Westmount, or Forest Heights
+var results =
+    Rentals
+        .Select(x => new
+        {
+            x.RentalID,
+            x.MonthlyRent,
+            Vacancies = x.MaxTenants - x.Renters.Count(),
+            Community = x.Address.Community,
+            Description = x.RentalType?.Description ?? "U/K"
+        })
 	
-	.Select(x => new
-    {
-        x.RentalID,
-        x.MonthlyRent,
-        x.Vacancies,
-        x.Community,
-        // if no rental type, mark as U/K
-        Description = x.RentalType == null ? "U/K" : x.RentalType.Description
-    })
-	
-	  .OrderBy(x => x.Community)   // community A-Z
-    .ThenByDescending(x => x.MonthlyRent) // rent high -> low
-    .Dump();
-	
-// dump at the end so I can actually see the results in linq
-// easier to check if my filtering + ordering is correct
+.Where(r => r.Vacancies > 0 &&
+                   (r.Community == "Oliver" ||
+                    r.Community == "Westmount" ||
+                    r.Community == "Forest Heights"))
+        .OrderBy(r => r.Community)            // A–Z by community
+        .ThenByDescending(r => r.MonthlyRent) // within community, higher rent first
+        .ToList();
+
+results.Dump();  // sanity-check filter + ordering
