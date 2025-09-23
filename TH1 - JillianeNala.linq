@@ -19,3 +19,13 @@ Rentals
              && (x.Community == "Oliver" 
               || x.Community == "Westmount" 
               || x.Community == "Forest Heights"))
+	
+	.Select(x => new
+    {
+        x.RentalID,
+        x.MonthlyRent,
+        x.Vacancies,
+        x.Community,
+        // if no rental type, mark as U/K
+        Description = x.RentalType == null ? "U/K" : x.RentalType.Description
+    })
